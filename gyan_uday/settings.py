@@ -21,6 +21,7 @@ ALLOWED_HOSTS = config(
     default='*',
     cast=lambda v: [s.strip() for s in v.split(',')]
 )
+ALLOWED_HOSTS.extend(['.vercel.app', '*'])
 
 CSRF_TRUSTED_ORIGINS = ['https://*.vercel.app']
 
