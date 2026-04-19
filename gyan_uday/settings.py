@@ -6,6 +6,7 @@ Django Settings
 import os
 from pathlib import Path
 from decouple import config
+import dj_database_url
 
 # ─────────────────────────────────────────────
 # BASE
@@ -96,10 +97,10 @@ WSGI_APPLICATION = 'gyan_uday.wsgi.application'
 # DATABASE
 # ─────────────────────────────────────────────
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL', default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
+        conn_max_age=600
+    )
 }
 
 # To switch to PostgreSQL (Phase 7 / production), replace with:
