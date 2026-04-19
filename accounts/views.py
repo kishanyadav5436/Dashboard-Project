@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 
-from .forms import LoginForm, UserUpdateForm
+from .forms import LoginForm, UserUpdateForm, SignupForm
 from .models import User
 
 
@@ -46,6 +46,34 @@ def login_view(request):
             messages.error(request, 'Invalid username or password. Please try again.')
 
     return render(request, 'accounts/login.html', {'form': form})
+
+
+# ─────────────────────────────────────────────────────────────────
+# SIGNUP
+# ─────────────────────────────────────────────────────────────────
+def signup_view(request):
+    """
+    Handles GET (show registration form) and POST (create user).
+    New users default to 'student' role.
+    """
+    # If already logged in, no need to sign up
+    if request.user.is_authenticated:
+        return redirect('dashboard:home')
+
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Ensure they are logged in after signup
+            login(request, user)
+            messages.success(request, f'Registration successful! Welcome, {user.first_name or user.username}.')
+            return redirect('dashboard:home')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = SignupForm()
+
+    return render(request, 'accounts/signup.html', {'form': form})
 
 
 # ─────────────────────────────────────────────────────────────────

@@ -25,6 +25,41 @@ class LoginForm(AuthenticationForm):
     )
 
 
+class SignupForm(UserCreationForm):
+    """
+    Public registration form styled for students.
+    """
+    first_name = forms.CharField(
+        max_length=50,
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
+    )
+    last_name = forms.CharField(
+        max_length=50,
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
+    )
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email Address'}),
+    )
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in ('username', 'password1', 'password2'):
+            self.fields[field_name].widget.attrs['class'] = 'form-control'
+            if field_name == 'username':
+                self.fields[field_name].widget.attrs['placeholder'] = 'Username'
+            elif field_name == 'password1':
+                self.fields[field_name].widget.attrs['placeholder'] = 'Create Password'
+            elif field_name == 'password2':
+                self.fields[field_name].widget.attrs['placeholder'] = 'Confirm Password'
+
+
 class UserCreateForm(UserCreationForm):
     """
     Form for creating a new user (Admin use — e.g. adding faculty/students).
@@ -57,7 +92,7 @@ class UserCreateForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email',
-                  'role', 'phone', 'password1', 'password2')
+                  'role', 'phone')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
