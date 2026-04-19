@@ -19,7 +19,7 @@ class StudentForm(forms.ModelForm):
         model  = Student
         fields = (
             'roll_number', 'first_name', 'last_name', 'email', 'phone',
-            'gender', 'date_of_birth', 'blood_group', 'address', 'photo',
+            'gender', 'date_of_birth', 'blood_group', 'address',
             'department', 'year', 'semester', 'status',
             'guardian_name', 'guardian_phone',
         )
@@ -33,7 +33,6 @@ class StudentForm(forms.ModelForm):
             'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'blood_group':   forms.Select(attrs={'class': 'form-control'}),
             'address':       forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'photo':         forms.FileInput(attrs={'class': 'form-control'}),
             'department':    forms.Select(attrs={'class': 'form-control'}),
             'year':          forms.Select(attrs={'class': 'form-control'}),
             'semester':      forms.Select(attrs={'class': 'form-control'}),
